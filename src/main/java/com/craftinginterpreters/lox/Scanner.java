@@ -20,6 +20,16 @@ class Scanner {
     }
 
     List<Token> scanTokens() {
+	while(!isAtEnd()) {
+	    start = current;
+	    scanToken(); 
+	}
+
+	tokens.add(new Token(EOF, "", null, line));
+	return tokens; 
+    }
+
+    List<Token> scanTokens() {
 	return null; // PASS
     }
 
