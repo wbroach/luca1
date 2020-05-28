@@ -11,7 +11,7 @@ class Scanner {
 
     private final String source;
     private final List<Token> tokens = new ArrayList<>();
-    private int start = 0;
+    private int start = 0;   // tracks the beginning of the current lexeme
     private int current = 0; // represents the current unconsumed character
     private int line = 1; 
     
@@ -64,11 +64,27 @@ class Scanner {
 		break;
 	    case '\n':
 		++line;
-		break; 
+		break;
+	    case '"': string(); break;
 	    default:
 		Lox.error(line, "Unexpected character.");
 		break; 
 	}
+    }
+
+    private void string() {
+	while (peek() != '"' & !isAtEnd()) {
+	    if (peek() == '\n') { ++line; }
+	    advance(); 
+	}
+
+	if (isAtEnd()) {
+	    Lox.error(line, "Unterminated string.");
+	    return; 
+	}
+
+	advance(); // advance past closing '"' char
+	addToken(STRING, source.substring(start + 1, current - 1)); // trim quotes
     }
 
     private boolean match(char expected) {                 
