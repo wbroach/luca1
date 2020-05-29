@@ -1,11 +1,11 @@
-package com.craftinginterpreters.lox;
+package luca; 
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import static com.craftinginterpreters.lox.TokenType.*;
+import static luca.TokenType.*;
 
 class Scanner {
 
@@ -94,7 +94,7 @@ class Scanner {
 		    identifier(); 
 		}
 		else {
-		    Lox.error(line, "Unexpected character.");
+		    Luca.error(line, "Unexpected character.");
 		}
 		break; 
 	}
@@ -129,7 +129,7 @@ class Scanner {
 	}
 
 	if (isAtEnd()) {
-	    Lox.error(line, "Unterminated string.");
+	    Luca.error(line, "Unterminated string.");
 	    return; 
 	}
 

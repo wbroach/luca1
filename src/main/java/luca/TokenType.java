@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package luca; 
 
 enum TokenType {
     // Single-character tokens

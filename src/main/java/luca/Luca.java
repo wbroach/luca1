@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package luca; 
 
 import java.io.BufferedReader;                               
 import java.io.IOException;                                  
@@ -8,13 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;                                  
 import java.util.List;
 
-public class Lox {
+public class Luca {
 
     static boolean hadError = false;
 
     public static void main(String[] args) throws IOException {
 	if (args.length > 1) {                                   
-	    System.out.println("Usage: jlox [script]");            
+	    System.out.println("Usage: luca [script]");            
 	    System.exit(64); 
 	}
 	else if (args.length == 1) {                           
@@ -60,6 +60,5 @@ public class Lox {
 	System.err.println("[line " + line + "] Error" + where + ": " + message);        
 	hadError = true;                                                  
     }  
-
 
 }

@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package luca; 
 
 class Token {                                                     
   final TokenType type;                                           
