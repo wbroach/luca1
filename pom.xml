@@ -29,8 +29,6 @@
 	<configuration>
           <archive>
             <manifest>
-              <!-- <addClasspath>true</addClasspath> -->
-              <!-- <classpathPrefix>lib/</classpathPrefix> -->
               <mainClass>luca.Luca</mainClass>
             </manifest>
           </archive>
