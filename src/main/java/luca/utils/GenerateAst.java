@@ -35,15 +35,32 @@ public class GenerateAst {
 	writer.println();
 	writer.println("abstract class " + baseName + " {");
 
+	defineVisitor(writer, baseName, types); 
+	
 	for (String type : types) {
 	    int sep = type.indexOf(':');
 	    String className = type.substring(0, sep).trim(); 
 	    String fields = type.substring(sep + 1, type.length()).trim();
 	    defineType(writer, baseName, className, fields); 
 	}
+
+	writer.println();                                              
+	writer.println("  abstract <R> R accept(Visitor<R> visitor);");
 	
 	writer.println("}"); // end of abstract class 
 	writer.close(); 
+    }
+
+    private static void defineVisitor(PrintWriter writer, String baseName, List<String> types) {
+	writer.println("  interface Visitor<R> {");
+
+	for (String type : types) {
+	    int sep = type.indexOf(':');
+	    String typeName = type.substring(0, sep).trim():
+	    writer.println("    R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");"); 
+	}
+
+	writer.println("  }"); 
     }
 
     private static void defineType(PrintWriter writer, String baseName, String className, String fieldList) {
@@ -57,6 +74,14 @@ public class GenerateAst {
 	}
 
 	writer.println("    }");
+
+	writer.println();
+	writer.println("    @Override");
+	writer.println("    <R> R accept(Visitor<R> visitor) {");
+	writer.println("      return visitor.visit" + className + baseName + "(this);");
+	writer.println("    }"); 
+
+	
 	writer.println();                                            
 	for (String field : fields) {                                
 	    writer.println("    final " + field + ";");                
