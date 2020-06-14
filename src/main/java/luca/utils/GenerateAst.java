@@ -26,7 +26,7 @@ public class GenerateAst {
     }
 
     private static void defineAst(String outputDir, String baseName, List<String> types) throws IOException {
-	String path = outPutDir + File.separator + baseName + ".java";
+	String path = outputDir + File.separator + baseName + ".java";
 	PrintWriter writer = new PrintWriter(path, "UTF-8");
 
 	writer.println("package " + packageName + ";");
@@ -56,7 +56,7 @@ public class GenerateAst {
 
 	for (String type : types) {
 	    int sep = type.indexOf(':');
-	    String typeName = type.substring(0, sep).trim():
+	    String typeName = type.substring(0, sep).trim();
 	    writer.println("    R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");"); 
 	}
 
