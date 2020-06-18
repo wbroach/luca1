@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # NOTE: This should be run from the main project directory!
 AST_PATH=src/main/java/luca
 
