@@ -49,5 +49,9 @@ class Parser {
 	if (!isAtEnd()) { ++current; }
 	return previous(); 
     }
+
+    private boolean isAtEnd() {
+	return peek().type == EOF; 
+    }
     
 }
