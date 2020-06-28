@@ -29,6 +29,18 @@ class Parser {
 	return expr;                                    
     }
 
+    private Expr comparison() {
+	Expr expr = addition();
+
+	while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+	    Token operator = previous();
+	    Expr right = addition();
+	    expr = new Expr.Binary(expr, operator, right);
+	}
+
+	return expr;
+    }
+
     private boolean match(TokenType... types) {
 	for (TokenType type : types) {           
 	    if (check(type)) {                     
