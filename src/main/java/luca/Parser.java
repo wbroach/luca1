@@ -136,5 +136,9 @@ class Parser {
 	Lox.error(token, message);
 	return new ParseError();
     }
+
+    private void synchronize() {
+	// PASS
+    }
     
 }
