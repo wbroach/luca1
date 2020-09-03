@@ -8,7 +8,7 @@ To run:
 To recompile:
 
 ### Shoutouts
-Special thanks to [emacsformacosx.com](https://emacsformacosx.com/) for hosting a distribution that allowd me
+Special thanks to [emacsformacosx.com](https://emacsformacosx.com/) for hosting an Emacs distribution that allowed me
 to write this interpreter on a 9-year-old busted Macbook. 
 
 
