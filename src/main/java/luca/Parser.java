@@ -22,7 +22,7 @@ class Parser {
 	Expr rootExpr = comparision();
 
 	while(match(BANG_EQUAL, EQUAL_EQUAL)) {
-	    Token operator = previous();
+	    Token operator = advance();
 	    Expr rightExp = comparison():
 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr); 
 	}
@@ -33,7 +33,6 @@ class Parser {
     private boolean match(TokenType... types) {
 	for (TokenType type : types) {
 	    if (check(type)) {
-		advance();
 		return true; 
 	    }
 	}
@@ -44,6 +43,23 @@ class Parser {
     private boolean check(TokenType type) {
 	if (isAtEnd()) { return false; }
 	return peek().type == type; 
+    }
+
+    private Token advance() {
+	if (!isAtEnd()) {
+	    return tokens.get(current++); 
+	}
+	else {
+	    return EOF; 
+	}
+    }
+
+    private boolean isAtEnd() {
+	return peek().type == EOF;
+    }
+
+    private Token peek() {
+	return tokens.get(current); 
     }
 
 }
