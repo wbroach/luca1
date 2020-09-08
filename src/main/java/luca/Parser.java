@@ -23,7 +23,7 @@ class Parser {
 
 	while(match(BANG_EQUAL, EQUAL_EQUAL)) {
 	    Token operator = advance();
-	    Expr rightExp = comparison():
+	    Expr rightExpr = comparison():
 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr); 
 	}
 
@@ -35,8 +35,32 @@ class Parser {
 
 	while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
 	    Token operator = advance();
-	    Expr rightExp = addition();
+	    Expr rightExpr = addition();
 	    rootExpr = Expr.Binary(rootExpor, operator, rightExpr); 
+	}
+
+	return rootExpr; 
+    }
+
+    private Expr addition() {
+	Expr rootExpr = multiplication();
+
+	while(match(MINUS,PLUS)) {
+	    Token operator = advance();
+	    Expr right = multiplication();
+	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr); 
+	}
+
+	return rootExpr; 
+    }
+
+    private Expr multiplication() {
+	Expr rootExpr = unary(); 
+
+	while(match(MINUS,PLUS)) {
+	    Token operator = advance();
+	    Expr right = unary(); 
+	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr); 
 	}
 
 	return rootExpr; 
