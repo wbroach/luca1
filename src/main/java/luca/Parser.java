@@ -11,11 +11,11 @@ class Parser {
 
     Parser(List<Token> tokens) {
 	this.tokens = tokens;
-	this.current = 0; 
+	this.current = 0;
     }
 
     private Expr expression() {
-	return equality(); 
+	return equality();
     }
 
     private Expr equality() {
@@ -23,11 +23,11 @@ class Parser {
 
 	while(match(BANG_EQUAL, EQUAL_EQUAL)) {
 	    Token operator = advance();
-	    Expr rightExpr = comparison():
-	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr); 
+	    Expr rightExpr = comparison();
+	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
 	}
 
-	return rootExpr; 
+	return rootExpr;
     }
 
     private Expr comparison() {
@@ -36,10 +36,10 @@ class Parser {
 	while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
 	    Token operator = advance();
 	    Expr rightExpr = addition();
-	    rootExpr = Expr.Binary(rootExpor, operator, rightExpr); 
+	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr);
 	}
 
-	return rootExpr; 
+	return rootExpr;
     }
 
     private Expr addition() {
@@ -48,10 +48,10 @@ class Parser {
 	while(match(MINUS,PLUS)) {
 	    Token operator = advance();
 	    Expr right = multiplication();
-	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr); 
+	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr);
 	}
 
-	return rootExpr; 
+	return rootExpr;
     }
 
     private Expr multiplication() {
@@ -59,11 +59,46 @@ class Parser {
 
 	while(match(MINUS,PLUS)) {
 	    Token operator = advance();
-	    Expr right = unary(); 
-	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr); 
+	    Expr right = unary();
+	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr);
 	}
 
-	return rootExpr; 
+	return rootExpr;
+    }
+
+    private Expr unary() {
+	if (match(BANG, MINUS)) {
+	    Token operator = advance();
+	    Expr right = unary();
+	    return new Expr.Unary(operator, right);
+	}
+	else {
+	    return primary();
+	}
+    }
+
+    private Expr primary() {
+	Expr.Literal literal = null;
+	Token next = advance();
+	if (next.type == FALSE) {
+	    literal = new Expr.Literal(false);
+	}
+	else if (next.type == TRUE) {
+	    literal = new Expr.Literal(true);
+	}
+	else if (next.type == NIL) {
+	    literal = new Expr.Literal(null);
+	}
+	else if (next.type == NUMBER || next.type == STRING) {
+	    literal = new Expr.Literal(next.literal);
+	}
+	else if (next.type == LEFT_PAREN) {
+	    Expr expr = expression();
+	    consume(RIGHT_PAREN, "Expect ')' after expression.");
+	    literal = new Expr.Grouping(expr);
+	}
+
+	return literal;
     }
 
     private boolean match(TokenType... types) {
