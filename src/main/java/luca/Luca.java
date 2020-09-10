@@ -44,12 +44,14 @@ public class Luca {
     }
 
     private static void run(String source) {    
-	Scanner scanner = new Scanner(source);    
+	Scanner scanner = new Scanner(source);
 	List<Token> tokens = scanner.scanTokens();
+	Parser parser = new Parser(tokens);
+	Expr rootExpr = parser.parse();
 	
-	for (Token tok : tokens) {              
-	    System.out.println(tok);              
-	}                                         
+	if (hadError) { return; }
+
+	System.out.println(new AstPrinter().print(rootExpr));
     }
 
     static void error(int line, String message) {                       
