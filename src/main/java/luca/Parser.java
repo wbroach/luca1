@@ -6,12 +6,23 @@ import static luca.TokenType.*;
 
 class Parser {
 
+    private static class ParseError extends RuntimeException {}
+
     private final List<Token> tokens;
     private int current;
 
     Parser(List<Token> tokens) {
 	this.tokens = tokens;
 	this.current = 0;
+    }
+
+    Expr parse() {
+	try {
+	    return expression();
+	}
+	catch (ParseError error) {
+	    return null;
+	}
     }
 
     private Expr expression() {
@@ -97,6 +108,9 @@ class Parser {
 	    consume(RIGHT_PAREN, "Expect ')' after expression.");
 	    literal = new Expr.Grouping(expr);
 	}
+	else {
+	    throw error(peek(), "Expression expected.");
+	}
 
 	return literal;
     }
@@ -104,24 +118,33 @@ class Parser {
     private boolean match(TokenType... types) {
 	for (TokenType type : types) {
 	    if (check(type)) {
-		return true; 
+		return true;
 	    }
 	}
 
-	return false; 
+	return false;
+    }
+
+    private Token consume(TokenType tok, String message) {
+	if (check(tok)) {
+	    return advance();
+	}
+	else {
+	    throw error(peek(), message);
+	}
     }
 
     private boolean check(TokenType type) {
 	if (isAtEnd()) { return false; }
-	return peek().type == type; 
+	return peek().type == type;
     }
 
     private Token advance() {
 	if (!isAtEnd()) {
-	    return tokens.get(current++); 
+	    return tokens.get(current++);
 	}
 	else {
-	    return EOF; 
+	    return EOF;
 	}
     }
 
@@ -130,7 +153,30 @@ class Parser {
     }
 
     private Token peek() {
-	return tokens.get(current); 
+	return tokens.get(current);
+    }
+
+    private ParseError error(Token token, String message) {
+	Luca.error(token, message);
+	return new ParseError();
+    }
+
+    private void synchronize() {
+	Token tok = advance();
+
+	while (!isAtEnd()) {
+	    if (tok.type == SEMICOLON) { return; }
+
+	    if (checkKeyword(peek().type)) { return; }
+
+	    tok = advance();
+	}
+    }
+
+    private boolean checkKeyword(TokenType type) {
+	return type == CLASS || type == FUN || type == VAR ||
+	    type == FOR || type == IF || type == WHILE ||
+	    type == PRINT || type == RETURN;
     }
 
 }
