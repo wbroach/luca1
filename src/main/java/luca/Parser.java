@@ -30,7 +30,7 @@ class Parser {
     }
 
     private Expr equality() {
-	Expr rootExpr = comparision();
+	Expr rootExpr = comparison();
 
 	while(match(BANG_EQUAL, EQUAL_EQUAL)) {
 	    Token operator = advance();
@@ -47,7 +47,7 @@ class Parser {
 	while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
 	    Token operator = advance();
 	    Expr rightExpr = addition();
-	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr);
+	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
 	}
 
 	return rootExpr;
@@ -58,8 +58,8 @@ class Parser {
 
 	while(match(MINUS,PLUS)) {
 	    Token operator = advance();
-	    Expr right = multiplication();
-	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr);
+	    Expr rightExpr = multiplication();
+	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
 	}
 
 	return rootExpr;
@@ -70,8 +70,8 @@ class Parser {
 
 	while(match(MINUS,PLUS)) {
 	    Token operator = advance();
-	    Expr right = unary();
-	    rootExpr = Expr.Binary(rootExpr, operator, rightExpr);
+	    Expr rightExpr = unary();
+	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
 	}
 
 	return rootExpr;
@@ -89,7 +89,7 @@ class Parser {
     }
 
     private Expr primary() {
-	Expr.Literal literal = null;
+	Expr literal = null;
 	Token next = advance();
 	if (next.type == FALSE) {
 	    literal = new Expr.Literal(false);
@@ -140,12 +140,7 @@ class Parser {
     }
 
     private Token advance() {
-	if (!isAtEnd()) {
-	    return tokens.get(current++);
-	}
-	else {
-	    return EOF;
-	}
+	return !isAtEnd() ? tokens.get(current++) : tokens.get(current);
     }
 
     private boolean isAtEnd() {
