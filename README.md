@@ -1,5 +1,10 @@
 # LUCA1
 
+## TODO
+- Consolidate binary operators in Parser.java using lambdas (supplier)
+- Add integer type
+- Add ternary operator
+
 ## Overview
 A tree-walk interpreter of a Javascript-like programming language
 
