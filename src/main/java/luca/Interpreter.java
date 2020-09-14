@@ -2,6 +2,10 @@ package luca;
 
 class Interpreter implements Expr.Visitor<Object> {
 
+    private Object evaluate(Expr expr) {
+	return expr.accept(this);
+    }
+
     @Override
     public Object visitLiteralExpr(Expr.Literal expr) {
 	return expr.value;
@@ -15,10 +19,16 @@ class Interpreter implements Expr.Visitor<Object> {
 	    case BANG:
 		return !isTruthy(right);
 	    case MINUS:
+		checkNumberOperand(expr.operator, right); 
 		return -((double) right);
 	}
 
 	return null;
+    }
+
+    private void checkNumberOperand(Token operator, Object operand) {
+	if (operand instanceof Double) { return; }
+	throw new RuntimeError(operator, "Operand must be a number."); 
     }
 
     private boolean isTruthy(Object obj) {
@@ -66,10 +76,6 @@ class Interpreter implements Expr.Visitor<Object> {
 	}
 
 	return null;
-    }
-
-    private Object evaluate(Expr expr) {
-	return expr.accept(this);
     }
 
     private boolean isEqual(Object a, Object b) {
