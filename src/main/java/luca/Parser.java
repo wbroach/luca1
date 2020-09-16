@@ -56,7 +56,7 @@ class Parser {
     private Expr addition() {
 	Expr rootExpr = multiplication();
 
-	while(match(MINUS,PLUS)) {
+	while(match(MINUS, PLUS)) {
 	    Token operator = advance();
 	    Expr rightExpr = multiplication();
 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
@@ -68,7 +68,7 @@ class Parser {
     private Expr multiplication() {
 	Expr rootExpr = unary(); 
 
-	while(match(MINUS,PLUS)) {
+	while(match(STAR, SLASH)) {
 	    Token operator = advance();
 	    Expr rightExpr = unary();
 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
