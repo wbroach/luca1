@@ -10,7 +10,9 @@ import java.util.List;
 
 public class Luca {
 
+    private static final Interpreter interpreter = new Interpreter();
     static boolean hadError = false;
+    static boolean hadRuntimeError = false; 
 
     public static void main(String[] args) throws IOException {
 	if (args.length > 1) {                                   
@@ -30,6 +32,7 @@ public class Luca {
 	run(new String(bytes, Charset.defaultCharset()));          
 
 	if (hadError) { System.exit(65); }
+	if (hadRuntimeError) { System.exit(70); }
     }  
 
     private static void runPrompt() throws IOException {         
@@ -40,6 +43,7 @@ public class Luca {
 	    System.out.print("> ");                                  
 	    run(reader.readLine());
 	    hadError = false; // if there is an error don't kill the entire session
+	    hadRuntimeError = false; 
 	}                                                          
     }
 
@@ -51,7 +55,7 @@ public class Luca {
 	
 	if (hadError) { return; }
 
-	System.out.println(new AstPrinter().print(rootExpr));
+	interpreter.interpret(rootExpr);
     }
 
     static void error(int line, String message) {                       
@@ -70,6 +74,11 @@ public class Luca {
 	else {
 	    report(token.line, " at '" + token.lexeme + "'", message);
 	}
+    }
+
+    static void runtimeError(RuntimeError error) {
+	System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+	hadRuntimeError = true; 
     }
 
 }
