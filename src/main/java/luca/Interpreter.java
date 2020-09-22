@@ -1,6 +1,6 @@
 package luca;
 
-class Interpreter implements Expr.Visitor<Object> {
+class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     void interpret(Expr expression) {
 	try {
@@ -14,6 +14,19 @@ class Interpreter implements Expr.Visitor<Object> {
     
     private Object evaluate(Expr expr) {
 	return expr.accept(this);
+    }
+
+    @Override
+    public Void visitExpressionStmt(Stmt.Expression stmt) {
+	evaluate(stmt.expression);
+	return null;
+    }
+
+    @Override
+    public void visitPrintStmt(Stmt.Print stmt) {
+	Object value = evaluate(stmt.expression);
+	System.out.println(stringify(value));
+	return null;
     }
 
     @Override
@@ -84,7 +97,7 @@ class Interpreter implements Expr.Visitor<Object> {
 		// an integer type...check all applicable and throw
 		// exception if none of them match
 		if (left instanceof Double && right instanceof Double) {
-		    return (double) left + (double) right; 
+		    return (double) left + (double) right;
 		}
 
 		if (left instanceof String && right instanceof String) {

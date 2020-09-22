@@ -28,11 +28,11 @@ class Parser {
 
     private Stmt statement() {
 	if (match(PRINT)) {
-	    advance();
+	    advance(); // advance past the print token
 	    return printStatement();
 	}
 	else {
-	    return expressionStatement;
+	    return expressionStatement();
 	}
     }
 
