@@ -1,8 +1,10 @@
 package luca;
 
+import java.util.List;
+
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
-    void interpret(Expr expression) {
+    void interpret(List<Stmt> statements) {
 	try {
 	    for (Stmt statement : statements) {
 		execute(statement);
@@ -11,6 +13,10 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	catch (RuntimeError error) {
 	    Luca.runtimeError(error); 
 	}
+    }
+
+    private void execute(Stmt stmt) {
+	stmt.accept(this);
     }
     
     private Object evaluate(Expr expr) {
@@ -24,7 +30,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public void visitPrintStmt(Stmt.Print stmt) {
+    public Void visitPrintStmt(Stmt.Print stmt) {
 	Object value = evaluate(stmt.expression);
 	System.out.println(stringify(value));
 	return null;

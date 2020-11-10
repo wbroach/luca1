@@ -51,11 +51,11 @@ public class Luca {
 	Scanner scanner = new Scanner(source);
 	List<Token> tokens = scanner.scanTokens();
 	Parser parser = new Parser(tokens);
-	Expr rootExpr = parser.parse();
+	List<Stmt> statements = parser.parse();
 	
 	if (hadError) { return; }
 
-	interpreter.interpret(rootExpr);
+	interpreter.interpret(statements);
     }
 
     static void error(int line, String message) {                       
