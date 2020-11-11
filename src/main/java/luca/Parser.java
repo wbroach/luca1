@@ -20,10 +20,39 @@ class Parser {
     List<Stmt> parse() {
 	List<Stmt> statements = new ArrayList<>();
 	while (!isAtEnd()) {
-	    statements.add(statement());
+	    statements.add(declaration());
 	}
 
 	return statements;
+    }
+
+    private Stmt declaration() {
+	try {
+	    if (match(VAR)) {
+		advance();
+		return varDeclaration();
+	    }
+	    else {
+		return statement();
+	    }
+	}
+	catch (ParseError error) {
+	    synchronize();
+	    return null;
+	}
+    }
+
+    private Stmt varDeclaration() {
+	Token name = consume(IDENTIFIER, "Expect variable name.");
+
+	Expr initializer = null;
+	if (match(EQUAL)) {
+	    advance();
+	    initializer = expression();
+	}
+
+	consume(SEMICOLON, "Expect ';' after variable declaration.");
+	return new Stmt.Var(name, initializer);
     }
 
     private Stmt statement() {
@@ -125,6 +154,9 @@ class Parser {
 	}
 	else if (next.type == NUMBER || next.type == STRING) {
 	    literal = new Expr.Literal(next.literal);
+	}
+	else if (next.type == IDENTIFIER) {
+	    literal = Expr.Variable(next);
 	}
 	else if (next.type == LEFT_PAREN) {
 	    Expr expr = expression();
