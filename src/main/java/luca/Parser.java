@@ -156,7 +156,7 @@ class Parser {
 	    literal = new Expr.Literal(next.literal);
 	}
 	else if (next.type == IDENTIFIER) {
-	    literal = Expr.Variable(next);
+	    literal = new Expr.Variable(next);
 	}
 	else if (next.type == LEFT_PAREN) {
 	    Expr expr = expression();
