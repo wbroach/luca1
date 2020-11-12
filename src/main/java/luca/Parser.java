@@ -78,7 +78,25 @@ class Parser {
     }
 
     private Expr expression() {
-	return equality();
+	return assignment();
+    }
+
+    private Expr assignment() {
+	Expr rootExpr = equality();
+
+	if (match(EQUAL)) {
+	    Token equals = advance();
+	    Expr value = assignment();
+
+	    if (rootExpr instanceof Expr.Variable) {
+		Token name = ((Expr.Variable)rootExpr).name;
+		return new Expr.Assign(name, value);
+	    }
+
+	    error(equals, "Invalid assignment target.");
+	}
+
+	return expr;
     }
 
     private Expr equality() {
