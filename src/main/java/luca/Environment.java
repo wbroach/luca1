@@ -9,7 +9,7 @@ class Environment {
     private final Map<String,Object> values = new HashMap<>();
 
     Environment(Environment enclosing) {
-	this.environment = enclosing;
+	this.enclosing = enclosing;
     }
 
     Environment() {
@@ -30,7 +30,7 @@ class Environment {
 
     void assign(Token name, Object value) {
 	if (values.containsKey(name.lexeme)) {
-	    values.put(name.name, value);
+	    values.put(name.lexeme, value);
 	}
 	else if (enclosing != null) {
 	    enclosing.assign(name, value);

@@ -111,7 +111,7 @@ class Parser {
 	    error(equals, "Invalid assignment target.");
 	}
 
-	return expr;
+	return rootExpr;
     }
 
     private Expr equality() {
