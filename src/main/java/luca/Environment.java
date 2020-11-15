@@ -13,7 +13,7 @@ class Environment {
     }
 
     Environment() {
-	this(null);
+	this(null); // global scope constructor, no parent
     }
 
     void define(String name, Object value) {
@@ -32,8 +32,12 @@ class Environment {
 	if (values.containsKey(name.lexeme)) {
 	    values.put(name.name, value);
 	}
+	else if (enclosing != null) {
+	    enclosing.assign(name, value);
+	}
 	else {
 	    throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
 	}
     }
+    
 }
