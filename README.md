@@ -4,6 +4,8 @@
 - Consolidate binary operators in Parser.java using lambdas (supplier)
 - Add integer type
 - Add ternary operator
+- Add modulo, +=, -=, *=, /=, %=
+- Add bitwise operators
 - Add `val` i.e. const value
 - Change truthiness of lists to mirror python (i.e. true if size > 0)
 - Comparison and equality on strings (lexigraphically) - ch 7 challenge
