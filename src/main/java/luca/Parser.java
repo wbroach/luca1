@@ -56,7 +56,11 @@ class Parser {
     }
 
     private Stmt statement() {
-	if (match(PRINT)) {
+	if (match(IF)) {
+	    advance();
+	    return ifStatement();
+	}
+	else if (match(PRINT)) {
 	    advance(); // advance past the print token
 	    return printStatement();
 	}
@@ -67,6 +71,20 @@ class Parser {
 	else {
 	    return expressionStatement();
 	}
+    }
+
+    private Stmt ifStatement() {
+	consume(LEFT_PAREN, "Expect '(' after 'if'.");
+	Expr condition = expression();
+	consume(RIGHT_PAREN, "Expect ')' after if condition.");
+
+	Stmt thenBranch = statement();
+	Stmt elseBranch = null;
+	if (match(ELSE)) {
+	    elseBranch = statement();
+	}
+
+	return new Stmt.If(condition, thenBranch, elseBranch);
     }
 
     private Stmt printStatement() {
