@@ -16,6 +16,8 @@
 A tree-walk interpreter of a Javascript-like programming language
 
 To run:
+To compile/run the code as-is from the repository, you must have Maven installed. 
+
 
 To recompile:
 
