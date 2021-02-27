@@ -1,6 +1,7 @@
 # LUCA1
 
 ## TODO
+- Change Maven build to package into a jar, create shell script acting as executable (or, maybe, a C executable)
 - Consolidate binary operators in Parser.java using lambdas (supplier)
 - Add integer type
 - Add ternary operator
