@@ -94,6 +94,7 @@ class Scanner {
 		    identifier(); 
 		}
 		else {
+		    // report error when unexpected char encountered
 		    Luca.error(line, "Unexpected character.");
 		}
 		break; 
