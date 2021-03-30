@@ -8,6 +8,7 @@
 - Add modulo, +=, -=, *=, /=, %=
 - Add bitwise operators
 - Change truthiness of lists to mirror python (i.e. true if size > 0)
+- Change "fun" keyword to "def" or something different
 - Add `val` i.e. const value
 - Comparison and equality on strings (lexigraphically) - ch 7 challenge
 - If either operand is string, convert other to string and then concat
