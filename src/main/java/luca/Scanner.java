@@ -168,14 +168,14 @@ class Scanner {
 	       || (c == '_');
     }
 
+    private boolean isDigit(char c) {
+	return c >= '0' && c <= '9'; 
+    }
+    
     private boolean isAlphaNumeric(char c) {
 	return isAlpha(c) || isDigit(c); 
     }
     
-    private boolean isDigit(char c) {
-	return c >= '0' && c <= '9'; 
-    }
-
     private boolean isAtEnd() {
 	return current >= source.length(); 
     }
