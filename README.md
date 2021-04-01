@@ -2,7 +2,7 @@
 
 ## TODO
 - Change Maven build to package into a jar with a well-formatted name, create shell script acting as executable (or, maybe, a C executable)
-- Consolidate binary operators in Parser.java using lambdas (supplier)
+  - See `parser_refactor` branch for notes on this
 - Add integer type
 - Add ternary operator
 - Add modulo, +=, -=, *=, /=, %=
