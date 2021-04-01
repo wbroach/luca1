@@ -156,41 +156,65 @@ class Parser {
 	return rootExpr;
     }
 
-    private Expr equality() {
-	Expr rootExpr = comparison();
+    private Expr binaryHelper(Supplier<Expr> rule, TokenType... types) {
+	Expr rootExpr = rule.get();
 
-	while(match(BANG_EQUAL, EQUAL_EQUAL)) {
+	while (match(types)) {
 	    Token operator = advance();
-	    Expr rightExpr = comparison();
+	    Expr rightExpr = rule.get();
 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
 	}
 
 	return rootExpr;
+    }
+
+    private Expr equality() {
+	return binaryHelper(() -> comparison(), BANG_EQUAL, EQUAL_EQUAL);
     }
 
     private Expr comparison() {
-	Expr rootExpr = addition();
-
-	while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
-	    Token operator = advance();
-	    Expr rightExpr = addition();
-	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
-	}
-
-	return rootExpr;
+	return binaryHelper(() -> addition(), GREATER, GREATER_EQUAL, LESS, LESS_EQUAL);
     }
 
     private Expr addition() {
-	Expr rootExpr = multiplication();
-
-	while(match(MINUS, PLUS)) {
-	    Token operator = advance();
-	    Expr rightExpr = multiplication();
-	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
-	}
-
-	return rootExpr;
+	return binaryHelper(() -> multiplication(), MINUS, PLUS);
     }
+
+    // private Expr equality() {
+    // 	Expr rootExpr = comparison();
+
+    // 	while(match(BANG_EQUAL, EQUAL_EQUAL)) {
+    // 	    Token operator = advance();
+    // 	    Expr rightExpr = comparison();
+    // 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
+    // 	}
+
+    // 	return rootExpr;
+    // }
+
+    // private Expr comparison() {
+    // 	Expr rootExpr = addition();
+
+    // 	while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+    // 	    Token operator = advance();
+    // 	    Expr rightExpr = addition();
+    // 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
+    // 	}
+
+    // 	return rootExpr;
+    // }
+
+    // private Expr addition() {
+    // 	Expr rootExpr = multiplication();
+
+    // 	while(match(MINUS, PLUS)) {
+    // 	    Token operator = advance();
+    // 	    Expr rightExpr = multiplication();
+    // 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
+    // 	}
+
+    // 	return rootExpr;
+    // }
 
     private Expr multiplication() {
 	Expr rootExpr = unary(); 
