@@ -1,0 +1,4 @@
+#!/bin/bash
+
+script_loc=$(dirname "$0")
+java -jar ${script_loc}/target/luca-1.0-SNAPSHOT.jar
