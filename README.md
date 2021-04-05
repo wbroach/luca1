@@ -4,6 +4,8 @@
 - Change Maven build to package into a jar with a well-formatted name, create shell script acting as executable (or, maybe, a C executable)
   - See `parser_refactor` branch for notes on this
 - Add integer type
+  - Probably going to need to create a `Number` superclass and then check at runtime which type it is?
+  - This is probably a low-priority in terms of implementation
 - Add ternary operator
 - Add modulo, +=, -=, *=, /=, %=
 - Add bitwise operators
