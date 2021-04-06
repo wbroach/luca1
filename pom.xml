@@ -4,6 +4,7 @@
   <groupId>luca</groupId>
   <artifactId>luca</artifactId>
   <packaging>jar</packaging>
+  <!-- If version value is modified it must also be changed in top-level executable -->
   <version>1.0-SNAPSHOT</version>
   <name>luca</name>
   <url>http://maven.apache.org</url>
