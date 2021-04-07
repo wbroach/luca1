@@ -29,7 +29,7 @@ class Parser {
     private Stmt declaration() {
 	try {
 	    if (match(VAR)) {
-		advance();
+		advance(); // consume and discard
 		return varDeclaration();
 	    }
 	    else {
@@ -47,7 +47,7 @@ class Parser {
 
 	Expr initializer = null;
 	if (match(EQUAL)) {
-	    advance();
+	    advance(); // consume and discard
 	    initializer = expression();
 	}
 
@@ -61,7 +61,7 @@ class Parser {
 	    return ifStatement();
 	}
 	else if (match(PRINT)) {
-	    advance(); // advance past the print token
+	    advance(); // discard print token & advance
 	    return printStatement();
 	}
 	else if (match(LEFT_BRACE)) {
