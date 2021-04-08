@@ -2,6 +2,7 @@
 
 ## TODO
 - Change Maven build to package into a jar with a well-formatted name, create shell script acting as executable (or, maybe, a C executable)
+- Consolidate binary operator code using lambdas
   - See `parser_refactor` branch for notes on this
 - Add integer type
   - Probably going to need to create a `Number` superclass and then check at runtime which type it is?
@@ -14,6 +15,7 @@
 - Add `val` i.e. const value
 - Comparison and equality on strings (lexigraphically) - ch 7 challenge
 - If either operand is string, convert other to string and then concat
+- 
 - ...what about iterables? Add support?
 
 ## Overview
@@ -25,8 +27,12 @@ To compile/run the code as-is from the repository, you must have Maven installed
 
 To recompile:
 
-### Shoutouts
-Special thanks to [emacsformacosx.com](https://emacsformacosx.com/) for hosting an Emacs distribution that allowed me
-to write this interpreter (initially) on a 9-year-old busted Macbook. 
+## Shoutouts & Attribution
+Special thanks to [emacsformacosx.com](https://emacsformacosx.com/) for hosting an Emacs distribution
+that allowed me to write this interpreter (initially) on a 9-year-old busted Macbook.
+
+luca1 is an implementation of Robert Nystrom's [Lox programming language](https://www.craftinginterpreters.com).
+
+
 
 
