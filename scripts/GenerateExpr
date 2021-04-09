@@ -7,4 +7,4 @@ rm src/main/java/luca/Expr.java # delete old Expr file
 rm src/main/java/luca/Stmt.java # delete old Stmt file
 javac src/main/java/luca/utils/GenerateAst.java
 java -cp src/main/java luca.utils.GenerateAst $AST_PATH
-rm src/main/java/luca/utils/GenerateAst.class
+rm src/main/java/luca/utils/GenerateAst.class # remove class file when done
