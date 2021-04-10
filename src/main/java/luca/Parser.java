@@ -47,7 +47,7 @@ class Parser {
 
 	Expr initializer = null;
 	if (match(EQUAL)) {
-	    advance(); // consume and discard
+	    advance(); 
 	    initializer = expression();
 	}
 
@@ -61,7 +61,7 @@ class Parser {
 	    return ifStatement();
 	}
 	else if (match(PRINT)) {
-	    advance(); // discard print token & advance
+	    advance(); 
 	    return printStatement();
 	}
 	else if (match(LEFT_BRACE)) {
