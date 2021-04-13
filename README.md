@@ -15,7 +15,7 @@
 - Add `val` i.e. const value
 - Comparison and equality on strings (lexigraphically) - ch 7 challenge
 - If either operand is string, convert other to string and then concat
-- 
+- adding `else if`?
 - ...what about iterables? Add support?
 
 ## Overview
