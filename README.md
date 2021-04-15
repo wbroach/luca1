@@ -4,11 +4,13 @@
 - Change Maven build to package into a jar with a well-formatted name, create shell script acting as executable (or, maybe, a C executable)
 - Consolidate binary operator code using lambdas
   - See `parser_refactor` branch for notes on this
+- Do similar lambdas work in the `statement()` method of `Parser.java`
 - Add integer type
   - Probably going to need to create a `Number` superclass and then check at runtime which type it is?
   - This is probably a low-priority in terms of implementation
 - Add ternary operator
 - Add modulo, +=, -=, *=, /=, %=
+- Support for ++, --? 
 - Add bitwise operators
 - Change truthiness of lists to mirror python (i.e. true if size > 0)
 - Change "fun" keyword to "def" or something different
