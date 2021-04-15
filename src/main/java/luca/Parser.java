@@ -2,6 +2,7 @@ package luca;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static luca.TokenType.*;
 
@@ -64,6 +65,14 @@ class Parser {
 	    advance(); 
 	    return printStatement();
 	}
+	else if (match(WHILE)) {
+	    advance();
+	    return whileStatement();
+	}
+	else if (match(FOR)) {
+	    advance();
+	    return forStatement();
+	}
 	else if (match(LEFT_BRACE)) {
 	    advance();
 	    return new Stmt.Block(block());
@@ -93,10 +102,57 @@ class Parser {
 	return new Stmt.Print(value);
     }
 
-    private Stmt expressionStatement() {
-	Expr expr = expression();
-	consume(SEMICOLON, "Expect ';' after expression.");
-	return new Stmt.Expression(expr);
+    private Stmt whileStatement() {
+	consume(LEFT_PAREN, "Expect '(' after while.");
+	Expr condition = expression();
+	consume(RIGHT_PAREN, "Expect ')' after condition.");
+	Stmt body = statement();
+
+	return new Stmt.While(condition, body);
+    }
+
+    private Stmt forStatement() {
+	consume(LEFT_PAREN, "Expect '(' after for.");
+
+	Stmt initializer;
+	if (match(SEMICOLON)) {
+	    advance();
+	    initializer = null;
+	}
+	else if (match(VAR)) {
+	    advance();
+	    initializer = varDeclaration();
+	}
+	else {
+	    initializer = expressionStatement();
+	}
+
+	Expr condition = null;
+	if (!check(SEMICOLON)) {
+	    condition = expression();
+	}
+	consume(SEMICOLON, "Expect ';' after loop condition.");
+
+	Expr increment = null;
+	if (!check(RIGHT_PAREN)) {
+	    increment = expression();
+	}
+	consume(RIGHT_PAREN, "Expect ')' after for clauses.");
+
+	Stmt body = statement();
+
+	if (increment != null) {
+	    body = new Stmt.Block(Arrays.asList(body, new Stmt.Expression(increment)));
+	}
+
+	if (condition == null) { condition = new Expr.Literal(true); }
+	body = new Stmt.While(condition, body);
+
+	if (initializer != null) {
+	    body = new Stmt.Block(Arrays.asList(initializer, body));
+	}
+	
+	return body;
     }
 
     private List<Stmt> block() {
@@ -110,6 +166,12 @@ class Parser {
 	return statements;
     }
 
+    private Stmt expressionStatement() {
+	Expr expr = expression();
+	consume(SEMICOLON, "Expect ';' after expression.");
+	return new Stmt.Expression(expr);
+    }
+    
     private Expr expression() {
 	return assignment();
     }
@@ -159,7 +221,7 @@ class Parser {
     private Expr equality() {
 	Expr rootExpr = comparison();
 
-	while(match(BANG_EQUAL, EQUAL_EQUAL)) {
+	while (match(BANG_EQUAL, EQUAL_EQUAL)) {
 	    Token operator = advance();
 	    Expr rightExpr = comparison();
 	    rootExpr = new Expr.Binary(rootExpr, operator, rightExpr);
