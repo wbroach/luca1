@@ -17,7 +17,9 @@
 - Add `val` i.e. const value
 - Comparison and equality on strings (lexigraphically) - ch 7 challenge
 - If either operand is string, convert other to string and then concat
-- adding `else if`?
+- adding `else if`? It's probably easier to do it as `elif`
+- Fix REPL such that CTRL-D does not throw Java NullPointerException,
+  see [link here for how to](https://stackoverflow.com/questions/5837823/read-input-until-controld)
 - ...what about iterables? Add support?
 
 ## Overview
