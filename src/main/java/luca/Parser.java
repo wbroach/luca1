@@ -33,6 +33,10 @@ class Parser {
 		advance(); // consume and discard
 		return varDeclaration();
 	    }
+	    else if (match(FUN)) {
+		advance();
+		return function("function");
+	    }
 	    else {
 		return statement();
 	    }
@@ -54,6 +58,25 @@ class Parser {
 
 	consume(SEMICOLON, "Expect ';' after variable declaration.");
 	return new Stmt.Var(name, initializer);
+    }
+
+    private Stmt.Function function(String kind) {
+	Token name = consume(IDENTIFIER, "Expect " + kind + " name.");
+	consume(LEFT_PAREN, "Expect '(' after " + kind + " name.");
+
+	List<Token> parameters = new ArrayList<>();
+	if (!check(RIGHT_PAREN)) {
+	    parameters.add(consume(IDENTIFIER, "Expect parameter name."));
+	    while (match(COMMA)) {
+		advance();
+		parameters.add(consume(IDENTIFIER, "Expect parameter name."));
+	    }
+	}
+	consume(RIGHT_PAREN, "Expect ')' after parameters.");
+
+	consume(LEFT_BRACE, "Expect '{' before " + kind + " body.");
+	List<Stmt> body = block();
+	return new Stmt.Function(name, parameters, body);
     }
 
     private Stmt statement() {
