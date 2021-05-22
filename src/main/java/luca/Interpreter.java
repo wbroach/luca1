@@ -18,7 +18,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 		}
 
 		@Override
-		public Strintg toString() {
+		public String toString() {
 		    return "<native fn>";
 		}
 	    });
@@ -83,6 +83,13 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitFunctionStmt(Stmt.Function stmt) {
+	LucaFunction function = new LucaFunction(stmt);
+	environment.define(stmt.name.lexeme, function);
+	return null;
+    }
+    
+    @Override
     public Object visitAssignExpr(Expr.Assign expr) {
 	Object value = evaluate(expr.value);
 	environment.assign(expr.name, value);
@@ -112,6 +119,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	Object value = evaluate(stmt.expression);
 	System.out.println(stringify(value));
 	return null;
+    }
+
+    @Override
+    public Void visitReturnStmt(Stmt.Return stmt) {
+	Object value = null;
+	if (stmt.value != null) { value = evaluate(stmt.value); }
+
+	throw new Return(value);
     }
 
     @Override
@@ -232,7 +247,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	    arguments.add(evaluate(argument));
 	}
 
-	if (!(callee instanceof LoxCallable)) {
+	if (!(callee instanceof LucaCallable)) {
 	    throw new RuntimeError(expr.paren, "Object not callable (not a function or class)");
 	}
 
