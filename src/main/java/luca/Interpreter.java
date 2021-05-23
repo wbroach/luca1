@@ -84,7 +84,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitFunctionStmt(Stmt.Function stmt) {
-	LucaFunction function = new LucaFunction(stmt);
+	LucaFunction function = new LucaFunction(stmt, environment);
 	environment.define(stmt.name.lexeme, function);
 	return null;
     }
@@ -224,7 +224,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 		}
 
 		throw new RuntimeError(expr.operator,
-				       "Operands must be two numbers or two strings"); 
+				       "Operands must be two numbers or two strings."); 
 	    case SLASH:
 		checkNumberOperands(expr.operator, left, right);
 		return (double) left / (double) right;
@@ -248,7 +248,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	}
 
 	if (!(callee instanceof LucaCallable)) {
-	    throw new RuntimeError(expr.paren, "Object not callable (not a function or class)");
+	    throw new RuntimeError(expr.paren, "Can only call functions and classes.");
 	}
 
 	LucaCallable function = (LucaCallable)callee;

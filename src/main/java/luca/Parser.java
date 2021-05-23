@@ -69,6 +69,9 @@ class Parser {
 	    parameters.add(consume(IDENTIFIER, "Expect parameter name."));
 	    while (match(COMMA)) {
 		advance();
+		if (parameters.size() >= 255) {
+		    error(peek(), "Can't have more than 255 parameters.");
+		}
 		parameters.add(consume(IDENTIFIER, "Expect parameter name."));
 	    }
 	}
@@ -116,6 +119,7 @@ class Parser {
 	Stmt thenBranch = statement();
 	Stmt elseBranch = null;
 	if (match(ELSE)) {
+	    advance();
 	    elseBranch = statement();
 	}
 
@@ -343,7 +347,7 @@ class Parser {
 	    }
 	}
 
-	Token paren = consume(RIGHT_PAREN, "Expect ')' after arguments");
+	Token paren = consume(RIGHT_PAREN, "Expect ')' after arguments.");
 
 	return new Expr.Call(callee, paren, arguments);
     }
@@ -372,7 +376,7 @@ class Parser {
 	    literal = new Expr.Grouping(expr);
 	}
 	else {
-	    throw error(peek(), "Expression expected.");
+	    throw error(next, "Expect expression.");
 	}
 
 	return literal;
