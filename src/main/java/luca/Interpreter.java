@@ -3,6 +3,7 @@ package luca;
 import java.util.ArrayList;
 import java.util.List;
 
+
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     final Environment globals = new Environment();
     private Environment environment = globals;
@@ -170,7 +171,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     private void checkNumberOperand(Token operator, Object operand) {
 	if (operand instanceof Double) { return; }
-	throw new RuntimeError(operator, "Operand must be a number."); 
+	throw new RuntimeError(operator, "Operand must be a number.");
     }
 
     private void checkNumberOperands(Token operator, Object left, Object right) {
