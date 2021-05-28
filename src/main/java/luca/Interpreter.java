@@ -1,12 +1,15 @@
 package luca;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     final Environment globals = new Environment();
     private Environment environment = globals;
+    private final Map<Expr,Integer> locals = new HashMap<>();
 
     Interpreter() {
 	globals.define("clock", new LucaCallable() {
@@ -32,7 +35,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	    }
 	}
 	catch (RuntimeError error) {
-	    Luca.runtimeError(error); 
+	    Luca.runtimeError(error);
 	}
     }
 
@@ -42,6 +45,10 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     
     private Object evaluate(Expr expr) {
 	return expr.accept(this);
+    }
+
+    void resolve(Expr expr, int depth) {
+	locals.put(expr, depth);
     }
 
     @Override
