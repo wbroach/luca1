@@ -100,7 +100,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Object visitAssignExpr(Expr.Assign expr) {
 	Object value = evaluate(expr.value);
-	environment.assign(expr.name, value);
+
+	if (locals.containsKey(expr)) {
+	    environment.assignAt(locals.get(expr), expr.name, value);
+	}
+	else {
+	    globals.assign(expr.name, value);
+	}
+
 	return value;
     }
 
@@ -173,7 +180,16 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Object visitVariableExpr(Expr.Variable expr) {
-	return environment.get(expr.name);
+	return lookUpVariable(expr.name, expr);
+    }
+
+    private Object lookUpVariable(Token name, Expr expr) {
+	if (locals.containsKey(expr)) {
+	    return environment.getAt(locals.get(expr), name.lexeme);
+	}
+	else {
+	    return globals.get(name);
+	}
     }
 
     private void checkNumberOperand(Token operator, Object operand) {
