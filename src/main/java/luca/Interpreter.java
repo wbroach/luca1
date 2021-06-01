@@ -66,6 +66,13 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	return null;
     }
 
+    @Override
+    public Void visitClassStmt(Stmt.Class stmt) {
+	environment.define(stmt.name.lexeme, null);
+	LucaClass _class = new LucaClass(stmt.name.lexeme);
+	environment.assign(stmt.name, _class);
+    }
+
     void executeBlock(List<Stmt> statements, Environment environment) {
 	Environment previous = this.environment;
 	try {

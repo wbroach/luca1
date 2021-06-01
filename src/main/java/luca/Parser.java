@@ -33,6 +33,10 @@ class Parser {
 		advance(); // consume and discard
 		return varDeclaration();
 	    }
+	    else if (match(CLASS)) {
+		advance();
+		return classDeclaration();
+	    }
 	    else if (match(FUN)) {
 		advance();
 		return function("function");
@@ -52,12 +56,26 @@ class Parser {
 
 	Expr initializer = null;
 	if (match(EQUAL)) {
-	    advance(); 
+	    advance();
 	    initializer = expression();
 	}
 
 	consume(SEMICOLON, "Expect ';' after variable declaration.");
 	return new Stmt.Var(name, initializer);
+    }
+
+    private Stmt classDeclaration() {
+	Token name = consume(IDENTIFIER, "Expect class name.");
+	consume(LEFT_BRACE, "Expect '{' before class body.");
+
+	List<Stmt.Function> methods = new ArrayList<>();
+	while (!check(RIGHT_BRACE) && !isAtEnd()) {
+	    methods.add(function("method"));
+	}
+
+	consume(RIGHT_BRACE, "Expect '}' after class body.");
+
+	return new Stmt.Class(name, methods);
     }
 
     private Stmt.Function function(String kind) {
